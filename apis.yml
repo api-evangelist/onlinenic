@@ -15,6 +15,8 @@ url: >-
   https://raw.githubusercontent.com/api-evangelist/onlinenic/refs/heads/main/apis.yml
 specificationVersion: '0.19'
 common:
+  - type: DomainSecurity
+    url: security/onlinenic-domain-security.yml
   - type: LinkedIn
     url: https://www.linkedin.com/company/onlinenic-inc-
 apis:
