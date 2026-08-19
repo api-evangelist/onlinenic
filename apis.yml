@@ -25,7 +25,7 @@ created: '2025-02-09'
 modified: '2026-04-28'
 url: >-
   https://raw.githubusercontent.com/api-evangelist/onlinenic/refs/heads/main/apis.yml
-specificationVersion: '0.19'
+specificationVersion: '0.23'
 common:
   - type: DomainSecurity
     url: security/onlinenic-domain-security.yml
