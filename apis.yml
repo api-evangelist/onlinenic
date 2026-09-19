@@ -1,59 +1,156 @@
 aid: onlinenic
 name: OnlineNIC
 description: >-
-  OnlineNIC offers a RESTful API with JSON format response for our partners to directly
-  manage their products and orders. We intends to help our partners automate the purchase
-  process and enpower them to provide enduser a better user experience.
+  OnlineNIC, Inc. is an ICANN-accredited domain registrar (IANA ID 82) and wholesale reseller platform,
+  operating since 1999, that sells domain names across roughly 400 TLDs, SSL/TLS certificates from
+  DigiCert, GeoTrust, RapidSSL, Sectigo and Symantec, business email, reseller and cloud hosting, escrow
+  and domain-privacy services. It publishes a partner-facing Reseller API — currently build 4.0.9 — that
+  lets resellers register, renew, transfer and manage domains, manage contacts, nameservers and EPP auth
+  codes, apply ID Shield registrant privacy, run Whois verification, and order, reissue, cancel and revoke
+  SSL certificates. The API is an RPC surface over HTTPS with a JSON envelope; the contract is published
+  only as a PDF reference guide, with no OpenAPI or other machine-readable description.
 type: Index
 deliveryModel:
   model: unknown
   open_source: false
-  commercial: false
-  callable_host: false
-  label: Delivery model not determined — needs a product licence on record
-  confidence: low
-  source:
-  - none
-  generated: '2026-08-28'
-  method: derived
-accessModel:
-  pricing: freemium
-  onboarding: unknown
-  trial: false
-  try_now: false
-  public: false
-  label: Freemium
+  commercial: true
+  callable_host: true
+  label: Commercial partner API on a callable host; no product licence on record
   confidence: medium
   source:
-  - plans
-  generated: '2026-07-22'
+    - probe
+  generated: '2026-09-17'
   method: derived
-position: Consuming
+accessModel:
+  pricing: free-with-account
+  onboarding: account-required
+  trial: true
+  try_now: false
+  public: false
+  label: Free API access with a reseller account; documented OTE test environment
+  confidence: high
+  source:
+    - plans
+    - docs
+  generated: '2026-09-17'
+  method: searched
+position: Producing
 access: 3rd-Party
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/onlinenic.png
-tags: []
+tags:
+  - Domains
+  - Domain Registration
+  - Registrar
+  - DNS
+  - SSL Certificates
+  - Certificates
+  - Reseller
+  - Hosting
+  - Security
 created: '2025-02-09'
-modified: '2026-04-28'
+modified: '2026-09-17'
 url: >-
   https://raw.githubusercontent.com/api-evangelist/onlinenic/refs/heads/main/apis.yml
 specificationVersion: '0.23'
 common:
-  - type: DomainSecurity
-    url: security/onlinenic-domain-security.yml
+  - type: Website
+    url: https://www.onlinenic.com/
+  - type: DeveloperPortal
+    url: https://www.onlinenic.com/cp_english/template_api/api_help.php
+  - type: SignUp
+    url: https://www.onlinenic.com/en/Home/register.html
+  - type: Login
+    url: https://www.onlinenic.com/en/Home/login.html
+  - type: Pricing
+    url: https://www.onlinenic.com/en/Domains/index/19.html
+  - type: Support
+    url: https://helpdesk.onlinenic.com/portal/en/home
+  - type: Blog
+    url: https://www.onlinenic.com/en/News/index.html
+  - type: TermsOfService
+    url: https://www.onlinenic.com/en/Content/content/118.html
+  - type: PrivacyPolicy
+    url: https://onlinenic.com/OnlineNIC_PRIVACY_Statement.pdf
   - type: LinkedIn
     url: https://www.linkedin.com/company/onlinenic-inc-
+  - type: Packages
+    url: packages/onlinenic-packages.yml
+  - type: SDKs
+    url: packages/onlinenic-packages.yml
+  - type: Authentication
+    url: authentication/onlinenic-authentication.yml
+  - type: Conventions
+    url: conventions/onlinenic-conventions.yml
+  - type: ErrorCatalog
+    url: errors/onlinenic-error-codes.yml
+  - type: Lifecycle
+    url: lifecycle/onlinenic-lifecycle.yml
+  - type: ChangeLog
+    url: changelog/onlinenic-changelog.yml
+  - type: Conformance
+    url: conformance/onlinenic-conformance.yml
+  - type: DataModel
+    url: data-model/onlinenic-data-model.yml
+  - type: Sandbox
+    url: sandbox/onlinenic-sandbox.yml
+  - type: Plans
+    url: plans/onlinenic-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/onlinenic-rate-limits.yml
+  - type: LLMsTxt
+    url: llms/onlinenic-llms.txt
+  - type: DomainSecurity
+    url: security/onlinenic-domain-security.yml
+  - type: X-MCPServerCandidate
+    url: mcp/onlinenic-mcp.yml
 apis:
   - aid: onlinenic:onlinenic
-    name: OnlineNIC
+    name: OnlineNIC Reseller API
     description: >-
-      OnlineNIC offers a RESTful API with JSON format response for our partners to
-      directly manage their products and orders. We intends to help our partners automate
-      the purchase process and enpower them to provide enduser a better user experience.
-    humanURL: ' https://wiki.onlinenic.com/#!index.md'
-    tags: []
+      The OnlineNIC Reseller API (build 4.0.9) gives partners programmatic control of the OnlineNIC
+      product catalogue. Twenty-six domain commands cover availability checking, registration, renewal,
+      information, status and DNS updates, contact objects, registrar transfer in and out, EPP auth
+      codes, private nameservers, Whois verification and ID Shield registrant privacy. Seventeen SSL
+      commands cover CSR parsing, approver-email discovery, ordering, renewal, price and product lookup,
+      order query and listing, domain-control validation, reissue, cancellation with refund, certificate
+      retrieval and revocation. The surface is RPC over HTTPS — two PHP endpoints with a `command` query
+      parameter, POST only — and every response is HTTP 200 carrying a JSON envelope with an integer
+      status code. Authentication is an API key plus a per-request MD5 token over the reseller id,
+      password digest, timestamp and command name, with an optional source-IP allowlist. The reference
+      is published as a PDF; there is no OpenAPI, AsyncAPI, GraphQL SDL or Postman collection.
+    humanURL: https://www.onlinenic.com/cp_english/template_api/api_help.php
+    baseURL: https://api.onlinenic.com/api4/
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/onlinenic.png
+    tags:
+      - Domains
+      - Domain Registration
+      - SSL Certificates
+      - Registrar
+      - Reseller
     properties:
       - type: Documentation
-        url: ' https://wiki.onlinenic.com/#!index.md'
+        url: https://www.onlinenic.com/cp_english/template_api/api_help.php
+      - type: APIReference
+        name: API 4.0.9 Reseller Guide (PDF)
+        url: >-
+          https://www.onlinenic.com/cp_english/template_api/download/Onlinenic_API_v4.0.9.2_Reseller_Guide.pdf
+      - type: X-APIReferenceLegacy
+        name: API 3.4 Usage Guide (PDF, deprecated)
+        url: https://onlinenic.com/cp_english/template_api/download/API_EN_Version_3.4.pdf
+      - type: SDKs
+        name: OnlineNIC PHP SDK (targets the deprecated 3.4 socket API)
+        url: https://www.onlinenic.com/cp_english/template_api/download.php?f=sdk_php.zip
+      - type: X-WHMCSModule
+        name: OnlineNIC Pro for WHMCS
+        url: https://www.onlinenic.com/en/Module/index/17.html
+      - type: X-TestEnvironment
+        name: OTE test environment (documented on the WHMCS module page)
+        url: https://www.onlinenic.com/en/Module/index/17.html
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
+x-enrichment:
+  date: '2026-09-17'
+  status: enriched
+  artifacts_added: 12
+  pass: local-v3
