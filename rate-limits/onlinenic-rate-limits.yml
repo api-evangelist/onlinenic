@@ -4,84 +4,79 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: OnlineNIC
 providerId: onlinenic
 created: '2026-05-04'
-# Provenance stamped 2026-08-11: this artifact was written by the API Evangelist
-# bulk sweep dated 2026-05-04, not harvested from the provider. See roadmap#35.
-method: generated
-modified: '2026-05-04'
+modified: '2026-09-17'
+generated: '2026-09-17'
+method: searched
+source: https://www.onlinenic.com/cp_english/template_api/download/Onlinenic_API_v4.0.9.2_Reseller_Guide.pdf
+docs: https://www.onlinenic.com/cp_english/template_api/api_help.php
 tags:
   - Rate Limiting
-  - Quotas
   - Throttling
-description: Machine-readable rate limit definitions for the OnlineNIC API surface. Captures per-tier
-  quotas, burst behavior, response signaling, and recovery semantics. Defaults are scaffold values to
-  be replaced with published provider limits.
+description: >-
+  Rate-limit posture for the OnlineNIC Reseller API v4. PROVENANCE CORRECTION: this file previously
+  carried invented per-tier limits (10/100/1000 rpm), monthly quotas and a full X-RateLimit-* header
+  set, written by a 2026-05-04 bulk sweep and never harvested from the provider. None of it appears
+  anywhere in OnlineNIC's documentation. It was replaced on 2026-09-17 with the measured truth: OnlineNIC
+  publishes no rate limits at all. An honest zero is the finding.
+limit_count: 0
+limits: []
+documented: false
 headers:
-  limit: X-RateLimit-Limit
-  remaining: X-RateLimit-Remaining
-  reset: X-RateLimit-Reset
-  retryAfter: Retry-After
-  policy: RateLimit-Policy
+  limit: null
+  remaining: null
+  reset: null
+  retryAfter: null
+  policy: null
+  note: >-
+    No rate-limit response header is documented in the 60-page API 4.0.9 Reseller Guide, and no header
+    is described on the API page. The guide's response model is a JSON envelope only; it does not
+    document any response headers at all.
 responseCodes:
-  throttled: 429
-  quotaExceeded: 429
-  serviceUnavailable: 503
-limits:
-  - tier: free
-    name: Free Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 10
-    burst: 20
-    timeFrame: minute
-    applies:
-      - OnlineNIC
-  - tier: free
-    name: Free Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 1000
-    timeFrame: month
-    applies:
-      - OnlineNIC
-  - tier: professional
-    name: Professional Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 100
-    burst: 200
-    timeFrame: minute
-    applies:
-      - OnlineNIC
-  - tier: professional
-    name: Professional Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 100000
-    timeFrame: month
-    applies:
-      - OnlineNIC
-  - tier: enterprise
-    name: Enterprise Negotiated Limit
-    scope: contract
-    metric: requests_per_minute
-    limit: 1000
-    burst: 5000
-    timeFrame: minute
-    applies:
-      - OnlineNIC
-policies:
-  - name: Backoff Strategy
-    description: Clients should implement exponential backoff with jitter, honoring the Retry-After header
-      when present.
-  - name: Burst Handling
-    description: Short bursts above the steady-state limit are tolerated up to the documented burst ceiling
-      before throttling engages.
-  - name: Quota Reset
-    description: Monthly quotas reset at the start of each calendar month in UTC. Per-minute and per-second
-      windows reset on a sliding-window basis.
-  - name: Fair Use
-    description: Even on uncapped enterprise tiers, sustained usage that materially impacts shared infrastructure
-      may be subject to fair-use throttling.
+  throttled: null
+  quotaExceeded: null
+  note: >-
+    429 does not appear in the API's 79-code error registry, and every documented response is HTTP 200.
+    There is no status code that signals throttling.
+back_pressure_signals:
+  - code: 1074
+    message: Server too busy , please try again.
+    note: >-
+      The only back-pressure signal in the whole registry. It carries no retry-after value, no window
+      and no indication of whether the caller or the server is the cause, so a client cannot compute a
+      correct backoff from it.
+  - code: 1024
+    message: Operation timed out.
+    note: >-
+      Documented as a network/connection timeout. Dangerous in combination with the absence of any
+      idempotency key — a caller that retries a timed-out registerDomain cannot know whether the first
+      attempt landed.
+access_controls:
+  - kind: ip-allowlist
+    description: >-
+      The reseller control panel can restrict API access to allowlisted source IPs. Error 1021 is
+      returned to a caller not on the list. This is an access control, not a rate limit.
+  - kind: request-validity-window
+    description: >-
+      A signed request is valid for 10 minutes (timestamp inside the MD5 token). Replay protection,
+      not throttling.
+  - kind: account-balance
+    description: >-
+      Transacting commands fail with 1023/1030 when the prepaid balance is short. In practice this is
+      the real ceiling on how much a reseller can do through the API.
+findings:
+  - >-
+    No published limit means an integrator cannot design a safe request rate, and an agent has no
+    runtime signal to back off on. For a registrar API where a mis-timed burst can mean duplicate
+    domain registrations that cannot be reversed, this is the most consequential documentation gap in
+    the surface.
+probe:
+  checked: '2026-09-17'
+  evidence:
+    - url: https://api.onlinenic.com/api4/domain/index.php?command=checkDomain
+      status: 200
+      note: >-
+        Unauthenticated POST returned no rate-limit headers of any kind on the response — consistent
+        with the documentation.
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com

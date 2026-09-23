@@ -1,0 +1,228 @@
+specification: API Commons MCP
+specificationVersion: '0.1'
+provider: OnlineNIC
+providerId: onlinenic
+generated: '2026-09-17'
+method: derived
+source: >-
+  derived from the command surface documented in
+  https://www.onlinenic.com/cp_english/template_api/download/Onlinenic_API_v4.0.9.2_Reseller_Guide.pdf
+status: candidate
+description: >-
+  OnlineNIC ships no MCP server. This is a CANDIDATE tool list derived from the 43 commands the
+  provider documents in its own API 4.0.9 Reseller Guide — a sketch of what an MCP server over this
+  API would expose, not a server anyone can call. No MCPServer pointer is wired into apis.yml; the
+  pointer would assert that OnlineNIC operates an agent surface, and it does not.
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: api-key
+  verified: derived
+  note: >-
+    Searched for a hosted or local server on 2026-09-17 — no /mcp or /sse endpoint on any OnlineNIC
+    host, no MCP mention in the API guide or on the site, no npm/PyPI package under an OnlineNIC
+    namespace, and no GitHub organisation. mode:none records a derived candidate. `auth: api-key`
+    describes what any such server would have to carry (apikey + MD5 token), not something verified.
+search:
+  checked: '2026-09-17'
+  probes:
+    - url: https://api.onlinenic.com/.well-known/ai-plugin.json
+      status: 404
+    - url: https://www.onlinenic.com/.well-known/ai-plugin.json
+      status: 404
+    - url: https://www.onlinenic.com/llms.txt
+      status: 404
+  registries: [npm, pypi, github-org]
+  result: none
+candidate_tools:
+  - name: check_domain_availability
+    backing_command: checkDomain
+    surface: domain
+    consequence: read
+  - name: register_domain
+    backing_command: registerDomain
+    surface: domain
+    consequence: irreversible-write
+    note: No reversal command exists for this write; see conventions reversibility block.
+  - name: renew_domain
+    backing_command: renewDomain
+    surface: domain
+    consequence: irreversible-write
+  - name: get_domain
+    backing_command: infoDomain
+    surface: domain
+    consequence: read
+  - name: update_domain_status
+    backing_command: updateDomainStatus
+    surface: domain
+    consequence: write
+  - name: update_domain_dns
+    backing_command: updateDomainDns
+    surface: domain
+    consequence: write
+  - name: set_domain_password
+    backing_command: setDomainPassword
+    surface: domain
+    consequence: write
+  - name: get_auth_code
+    backing_command: getAuthCode
+    surface: domain
+    consequence: read
+  - name: update_auth_code
+    backing_command: updateAuthCode
+    surface: domain
+    consequence: write
+  - name: create_contact
+    backing_command: createContact
+    surface: contact
+    consequence: write
+  - name: get_contact
+    backing_command: infoContact
+    surface: contact
+    consequence: read
+  - name: update_contact
+    backing_command: updateContact
+    surface: contact
+    consequence: write
+  - name: change_domain_contact
+    backing_command: domainChangeContact
+    surface: contact
+    consequence: write
+    note: Asynchronous — returns 2000/2001/2002 pending states and requires registrant email approval.
+  - name: check_host
+    backing_command: checkHost
+    surface: host
+    consequence: read
+  - name: create_host
+    backing_command: createHost
+    surface: host
+    consequence: write
+  - name: get_host
+    backing_command: infoHost
+    surface: host
+    consequence: read
+  - name: update_host
+    backing_command: updateHost
+    surface: host
+    consequence: write
+  - name: delete_host
+    backing_command: deleteHost
+    surface: host
+    consequence: write
+  - name: transfer_domain
+    backing_command: transferDomain
+    surface: transfer
+    consequence: write
+  - name: query_transfer_status
+    backing_command: queryTransferStatus
+    surface: transfer
+    consequence: read
+  - name: cancel_domain_transfer
+    backing_command: cancelDomainTransfer
+    surface: transfer
+    consequence: write
+  - name: apply_id_shield
+    backing_command: applyIDShield
+    surface: privacy
+    consequence: write
+  - name: get_id_shield
+    backing_command: infoIDShield
+    surface: privacy
+    consequence: read
+  - name: suspend_id_shield
+    backing_command: suspendIDShield
+    surface: privacy
+    consequence: write
+  - name: resume_id_shield
+    backing_command: resumeIDShield
+    surface: privacy
+    consequence: write
+  - name: check_whois_verification
+    backing_command: checkWhoisVF
+    surface: whois
+    consequence: read
+  - name: resend_whois_verification
+    backing_command: resendWhoisVF
+    surface: whois
+    consequence: write
+  - name: parse_csr
+    backing_command: parseCsr
+    surface: ssl
+    consequence: read
+  - name: list_approval_emails
+    backing_command: getApprovalEmailList
+    surface: ssl
+    consequence: read
+  - name: order_ssl
+    backing_command: orderSSL
+    surface: ssl
+    consequence: reversible-write
+    reversal: cancelSSL within 30 days of issuance
+  - name: renew_ssl
+    backing_command: renewSSL
+    surface: ssl
+    consequence: reversible-write
+  - name: get_ssl_product_details
+    backing_command: getSSLProductDetails
+    surface: ssl
+    consequence: read
+  - name: get_ssl_price
+    backing_command: getSSLprice
+    surface: ssl
+    consequence: read
+  - name: get_ssl_order_id
+    backing_command: getSSLOrderId
+    surface: ssl
+    consequence: read
+  - name: get_ssl_order_info
+    backing_command: getSSLOrderInfo
+    surface: ssl
+    consequence: read
+  - name: list_ssl_orders
+    backing_command: getSSLOrderList
+    surface: ssl
+    consequence: read
+  - name: check_domain_dcv
+    backing_command: checkDomainDcv
+    surface: ssl
+    consequence: read
+  - name: resend_approval_email
+    backing_command: resendApprovalEmail
+    surface: ssl
+    consequence: write
+  - name: reissue_ssl
+    backing_command: reissueSSL
+    surface: ssl
+    consequence: write
+  - name: cancel_ssl
+    backing_command: cancelSSL
+    surface: ssl
+    consequence: reversal
+  - name: change_validation_email
+    backing_command: changeValidationEmail
+    surface: ssl
+    consequence: write
+  - name: change_dcv_method
+    backing_command: changeDCVmethod
+    surface: ssl
+    consequence: write
+  - name: get_ssl_cert
+    backing_command: getSSLCert
+    surface: ssl
+    consequence: read
+  - name: revoke_ssl
+    backing_command: revokeSSL
+    surface: ssl
+    consequence: reversal
+tool_count: 44
+input_schemas:
+  available: false
+  note: >-
+    Parameter tables exist in the PDF for every command, but there is no machine-readable contract to
+    generate inputSchema from, so this candidate carries names and consequence classes only. Building
+    a real server here would start with writing the OpenAPI the provider does not publish.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

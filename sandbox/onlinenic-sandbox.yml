@@ -1,0 +1,85 @@
+specification: API Commons Sandbox
+specificationVersion: '0.1'
+provider: OnlineNIC
+providerId: onlinenic
+generated: '2026-09-17'
+method: searched
+source: https://www.onlinenic.com/cp_english/template_api/download/Onlinenic_API_v4.0.9.2_Reseller_Guide.pdf#1.2
+docs: https://www.onlinenic.com/en/Module/index/17.html
+description: >-
+  OnlineNIC publishes a named test environment — OTE (Operational Test Environment) — with a separate
+  host, published shared test credentials and published test nameservers. Every command in the 4.0.9
+  guide lists a "TEST API" URL alongside its "Live API" URL, which is an unusually complete sandbox
+  declaration for a provider of this size. The environment is documented in two independent places
+  (the API guide and the WHMCS module page). It is recorded here verbatim; nothing below was invented.
+sandbox:
+  name: OTE (Operational Test Environment)
+  mode: separate-host
+  base_url: https://ote.onlinenic.com
+  endpoints:
+    - https://ote.onlinenic.com/api4/ssl/index.php
+    - https://ote.onlinenic.com/api4/domain/index.php
+  parity:
+    command_parity: full
+    note: >-
+      The guide prints a TEST API URL for all 43 documented commands, so the test surface is declared
+      to mirror the live surface command-for-command.
+  differences_from_live:
+    - IP allowlisting is not enforced. Guide 1.2 — "Unlike Live environment, before you getting start,
+      there is no-need to add Your IP address to Whitelist under OTE."
+    - Only ns1.dns-diy.net and ns2.dns-diy.net are valid nameservers under OTE.
+  test_credentials:
+    published: true
+    note: >-
+      These are shared demo credentials the provider prints openly in its public API guide and on its
+      public WHMCS module page. They are recorded because a sandbox with published credentials is a
+      materially different developer experience from one that requires a sales conversation. They are
+      not secrets and were not obtained by any means other than reading a public page.
+    entries:
+      - source: API 4.0.9 Reseller Guide, section 1.2 Test environment
+        source_url: https://www.onlinenic.com/cp_english/template_api/download/Onlinenic_API_v4.0.9.2_Reseller_Guide.pdf
+        user: '10578'
+        note: A shared OTE reseller id, published with a matching password and API key in the guide.
+      - source: WHMCS module page, "About OTE"
+        source_url: https://www.onlinenic.com/en/Module/index/17.html
+        user: '135610'
+        note: >-
+          The WHMCS module ships with this OTE account; ticking Test Mode switches the module to OTE
+          and the credential does not need to be entered. The same id is the default in the
+          first-party PHP SDK's config.php.
+  test_nameservers:
+    - ns1.dns-diy.net
+    - ns2.dns-diy.net
+  test_fixtures:
+    test_cards: null
+    test_domains: null
+    note: >-
+      No fixture domain list, magic-value table or trigger catalogue is published. A tester registers
+      arbitrary names against the OTE registry.
+  time_simulation:
+    supported: false
+    note: >-
+      No test clock. This matters for a registrar: expiry, renewal grace and the documented 30-day SSL
+      cancellation window cannot be rehearsed in OTE.
+  reset_policy: not published
+x-probe:
+  checked: '2026-09-17'
+  finding: unreachable
+  detail: >-
+    ote.onlinenic.com resolves (218.5.81.136) but did not complete a TCP/TLS connection on any attempt,
+    over HTTPS or HTTP, from this probe. The live API host on the same network answers normally, so
+    this is specific to the OTE host rather than a network fault at our end. Recorded as a measured
+    observation on one date from one vantage point — not a claim that the environment is retired.
+  evidence:
+    - url: https://ote.onlinenic.com/api4/ssl/index.php
+      status: 0
+      note: connection failed
+    - url: http://ote.onlinenic.com/api4/ssl/index.php
+      status: 0
+      note: connection failed
+    - url: https://api.onlinenic.com/api4/ssl/index.php
+      status: 200
+      note: live host answers, for contrast
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

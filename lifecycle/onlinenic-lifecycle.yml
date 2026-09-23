@@ -1,0 +1,121 @@
+specification: API Commons Lifecycle
+specificationVersion: '0.1'
+provider: OnlineNIC
+providerId: onlinenic
+generated: '2026-09-17'
+method: searched
+source: >-
+  https://www.onlinenic.com/cp_english/template_api/api_help.php ;
+  https://www.onlinenic.com/cp_english/template_api/download/Onlinenic_API_v4.0.9.2_Reseller_Guide.pdf
+description: >-
+  Versioning, deprecation, support and availability posture for the OnlineNIC Reseller API, read from
+  the provider's own API page and reference guide and confirmed by live probes.
+versioning:
+  strategy: path-segment
+  location: URL path (/api4/) plus a build number on the guide
+  current:
+    version: '4.0.9'
+    build: 4.0.9.2
+    released: '2020-03-17'
+    released_source: https://www.onlinenic.com/cp_english/template_api/api_help.php
+    transport: HTTPS POST
+    format: JSON
+    scope: Domain + SSL
+    status: current
+  history:
+    - version: '4.0.9'
+      released: '2020-03-17'
+      status: current
+    - version: '4.0.5'
+      status: superseded
+      guide: https://www.onlinenic.com/cp_english/template_api/download/OnlinenNIC_API_SSL_Guide_V4.0.pdf
+    - version: '3.4'
+      released: '2015-10-08'
+      status: deprecated
+      status_source: >-
+        The provider's own API page labels the 3.4 entry "Deprecated" beside its download, with the
+        description "Domain Functions Only ... XML response".
+      transport: raw TCP socket, port 30009
+      format: XML
+      scope: Domain only
+      guide: https://onlinenic.com/cp_english/template_api/download/API_EN_Version_3.4.pdf
+    - version: '3.1'
+      status: superseded
+      guide: https://onlinenic.com/cp_english/template_api/download/API_EN_Version_3.1.pdf
+  note: >-
+    Both major versions remain downloadable and the deprecated 3.4 protocol is still what OnlineNIC's
+    own shipping WHMCS module and PHP SDK speak, so "deprecated" here labels the documentation, not the
+    traffic.
+deprecation:
+  policy_published: false
+  policy_url: null
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  notice_period: null
+  deprecated_versions:
+    - version: '3.4'
+      marked: 'Deprecated (label on the API download page)'
+      sunset_date: null
+      still_downloadable: true
+      still_operational: true
+  note: >-
+    A version is LABELLED deprecated, but no deprecation POLICY exists: no notice period, no sunset
+    date, no Sunset/Deprecation response headers, and no statement of how long a deprecated version is
+    supported. No Deprecation pointer is wired into apis.yml — a label on one download is not a policy,
+    and crediting it as one would misreport the provider's posture.
+status_page:
+  published: false
+  url: null
+  probed:
+    - url: https://status.onlinenic.com/
+      status: 0
+      note: host does not resolve to a reachable service
+  note: >-
+    No status page, uptime history or incident feed was found on any OnlineNIC host. The site's
+    "Maintenance Schedule" link on the legacy homepage is a marketing page, not a status surface. No
+    StatusPage pointer is wired.
+sla:
+  published: false
+  note: >-
+    No uptime or response-time commitment is published. The reseller programme advertises "24/7
+    support" and a "dedicated account manager" as service attributes, not as contractual targets.
+support:
+  channels:
+    - kind: helpdesk
+      url: https://helpdesk.onlinenic.com/portal/en/home
+      status: 200
+      note: Zoho-hosted partner help centre; ticket submission and knowledge base.
+    - kind: ticket
+      url: https://support.onlinenic.com/
+      status: 302
+      note: Redirects to helpdesk.onlinenic.com.
+    - kind: live-chat
+      url: https://www.onlinenic.com/english/livechat/live_index1.php
+      note: Named in the API guide as the first-line channel for API integration questions.
+    - kind: email
+      address: sales@onlinenic.com
+availability:
+  api_host_probed:
+    - url: https://api.onlinenic.com/api4/ssl/index.php
+      status: 200
+      body: '{"code":1001,"msg":"Invalid request."}'
+      checked: '2026-09-17'
+    - url: https://api.onlinenic.com/api4/domain/index.php?command=checkDomain
+      status: 200
+      body: '{"code":1004,"msg":"Required parameter missing(user)."}'
+      checked: '2026-09-17'
+  docs_host_probed:
+    - url: https://wiki.onlinenic.com/
+      status: 404
+      body: No forward mapping for this host.
+      note: >-
+        The documentation host this catalogue recorded as the API's humanURL is GONE. It resolves to
+        50.116.10.188, serves a certificate that does not match the hostname, and returns
+        "No forward mapping for this host." The live reference moved to
+        /cp_english/template_api/api_help.php on the main site; this record has been repointed.
+      checked: '2026-09-17'
+  last_published_change: '2020-08-04'
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

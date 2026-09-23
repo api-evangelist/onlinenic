@@ -1,0 +1,140 @@
+specification: API Commons Packages
+specificationVersion: '0.1'
+provider: OnlineNIC
+providerId: onlinenic
+generated: '2026-09-17'
+method: searched
+source: >-
+  https://www.onlinenic.com/cp_english/template_api/api_help.php ;
+  https://www.onlinenic.com/en/Module/index/17.html ; registry metadata from packagist.org
+description: >-
+  Client libraries and integration packages for the OnlineNIC Reseller API. OnlineNIC distributes its
+  own code as ZIP downloads from its website — there is no npm, PyPI, Packagist, Maven or NuGet entry
+  under an OnlineNIC namespace, and no GitHub organisation (api.github.com/orgs/onlinenic returns 404).
+  Every registry named in the enrichment contract was checked. Currency is the headline finding here:
+  the newest first-party artifact of any kind is the 2019 WHMCS module, and the only SDK OnlineNIC
+  ships targets API 3.4 — the version its own documentation page labels "Deprecated" — while the
+  current API is 4.0.9.
+registries_checked:
+  - registry: packagist
+    result: one third-party package found; no first-party namespace
+  - registry: npm
+    result: none
+  - registry: pypi
+    result: none
+  - registry: rubygems
+    result: none
+  - registry: maven-central
+    result: none
+  - registry: nuget
+    result: none
+  - registry: crates.io
+    result: none
+  - registry: pkg.go.dev
+    result: none
+  - registry: github-org
+    result: 'no org — https://api.github.com/orgs/onlinenic returned 404'
+packages:
+  - name: OnlineNIC PHP SDK (sdk_php)
+    language: PHP
+    official: true
+    registry: direct-download
+    url: https://www.onlinenic.com/cp_english/template_api/download.php?f=sdk_php.zip
+    docs: https://www.onlinenic.com/cp_english/template_api/api_help.php
+    version: '3.4'
+    published: '2015-10-08'
+    version_note: >-
+      The download URL is unpinned — it always serves the current build and carries no version in the
+      path — so a consumer cannot tell what they are getting from the link alone. The version and date
+      recorded here are the ones the provider prints beside the download on its API page ("Software
+      Development Kit for API 3.4 ... Release Date: 2015.10.08").
+    targets_api_version: '3.4'
+    status: stale
+    note: >-
+      Downloaded and inspected 2026-09-17 (HTTP 200, 35,164 bytes, 39 files). It implements the
+      DEPRECATED v3.4 socket API, not the current REST API v4: ApiClient.php builds an XML
+      <request><category><action><params><cltrid><chksum> document and ships it over a raw TCP socket,
+      and config.php defaults to server 218.5.81.149 port 30009 with the shared OTE account. It carries
+      39 demo scripts covering domain, SSL and account operations. No first-party SDK exists for API v4.
+    probed:
+      url: https://www.onlinenic.com/cp_english/template_api/download.php?f=sdk_php.zip
+      status: 200
+      bytes: 35164
+      content_type: application/zip
+  - name: OnlineNIC Pro (WHMCS registrar module)
+    language: PHP
+    kind: platform-module
+    platform: WHMCS
+    official: true
+    registry: direct-download
+    url: https://www.onlinenic.com/en/public/upload/down/20181015/1539576471.zip
+    docs: https://www.onlinenic.com/en/Module/index/17.html
+    version: '1.46'
+    published: '2019-05-10'
+    version_note: Version and release date printed on the provider's WHMCS module page.
+    supports:
+      - WHMCS 6.x
+      - WHMCS 7.x
+      - PHP 5.4+
+    transport_note: >-
+      Requires outbound TCP to the OnlineNIC API server on port 30009, i.e. it drives the deprecated
+      socket API rather than the HTTPS v4 API. The page publishes the iptables rules to open it.
+    features:
+      - Domain registration / renewal / transfer, including new gTLDs
+      - Transfer lock, contact update, nameserver change, private DNS
+      - EPP auth code retrieval
+      - ID Shield privacy protection
+      - Domain auto-synchronisation
+    note: >-
+      Last released 2019-05-10 and declares support only through WHMCS 7.x; WHMCS has shipped 8.x since
+      2020. Probed 2026-09-17 — the ZIP still downloads (HTTP 200, 550,498 bytes).
+    probed:
+      url: https://www.onlinenic.com/en/public/upload/down/20181015/1539576471.zip
+      status: 200
+      bytes: 550498
+      content_type: application/zip
+  - name: OnlineNIC Pricing Importer
+    language: PHP
+    kind: platform-module
+    platform: WHMCS
+    official: true
+    registry: direct-download
+    url: null
+    docs: https://www.onlinenic.com/en/Module/index/17.html
+    version: null
+    published: '2017-12-11'
+    version_note: >-
+      The provider's module page announces it ("Released Dec 11, 2017") but publishes no version number
+      and the download is behind the reseller control panel, so no version could be read. null here
+      means checked-and-nothing-to-record, not unchecked.
+    note: Companion to OnlineNIC Pro; bulk-imports the domain cost CSV and sets selling prices.
+  - name: pezhvak/onlinenic-api
+    language: PHP
+    framework: Laravel
+    official: false
+    registry: packagist
+    url: https://packagist.org/packages/pezhvak/onlinenic-api
+    repository: https://github.com/Pezhvak/onlinenic-api
+    version: v1.0.8
+    published: '2020-12-07'
+    version_note: Read from packagist.org/packages/pezhvak/onlinenic-api.json (unauthenticated).
+    downloads_total: 331
+    stars: 3
+    releases: 7
+    first_published: '2018-12-28'
+    note: >-
+      Community library, NOT published by OnlineNIC. Its author states it exists because OnlineNIC
+      shipped no library for API v4. It is the only package anywhere that covers the current REST API,
+      and it has been unmaintained since December 2020. Recorded for completeness and explicitly marked
+      official:false — it does not count toward first-party SDK coverage.
+first_party_count: 3
+third_party_count: 1
+currency_finding: >-
+  Every first-party package predates the current API. The SDK (2015) targets the deprecated 3.4 socket
+  protocol; the WHMCS module (2019) drives the same socket protocol; the API it is meant to wrap moved
+  to HTTPS/JSON and reached build 4.0.9 in March 2020. A reseller adopting OnlineNIC today either
+  integrates the current API with no first-party client at all, or uses a first-party client against a
+  protocol the vendor's own documentation marks deprecated.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

@@ -1,0 +1,104 @@
+specification: API Commons ChangeLog
+specificationVersion: '0.1'
+provider: OnlineNIC
+providerId: onlinenic
+generated: '2026-09-17'
+method: searched
+source: >-
+  https://www.onlinenic.com/cp_english/template_api/download/Onlinenic_API_v4.0.9.2_Reseller_Guide.pdf#6.7 ;
+  https://www.onlinenic.com/en/News/index.html
+description: >-
+  OnlineNIC keeps two dated surfaces that together act as an API changelog: a "Change Log" addendum
+  inside the API Reseller Guide PDF, which lists what each 4.0x build added, and the News Center, which
+  announces product and API changes to partners with a date on each item. Neither is a feed — there is
+  no RSS, no Atom and no JSON — and both stop in 2020.
+scheme:
+  style: build-number
+  pattern: 4.0x
+  current_version: 4.0.9.2
+  current_version_source: >-
+    Title page of the current guide ("Build 4.0.9"); the file is published as
+    Onlinenic_API_v4.0.9.2_Reseller_Guide.pdf.
+  machine_readable: false
+  feed: null
+surfaces:
+  - kind: release-notes
+    name: API Guide Change Log (Addendum 6.7)
+    url: https://www.onlinenic.com/cp_english/template_api/download/Onlinenic_API_v4.0.9.2_Reseller_Guide.pdf
+    format: pdf-section
+    status: 200
+  - kind: announcements
+    name: News Center
+    url: https://www.onlinenic.com/en/News/index.html
+    format: html
+    status: 200
+    dated: true
+entries:
+  - version: '4.09'
+    date: null
+    date_note: >-
+      Undated in the change log; the provider's API page gives the 4.09 release date as 2020-03-17, and
+      the matching News Center announcement is dated March 17 2020.
+    breaking: false
+    additions:
+      - Change Domain Validation Method (changeDCVmethod)
+    highlights: New feature — change the DCV method of an SSL order after submission.
+  - version: '4.08'
+    date: '2020-02-06'
+    breaking: false
+    additions:
+      - 'getSSLOrderList response gains page (page number) and pagesum (total pages)'
+      - 'getSSLOrderInfo response gains completedate'
+    changes:
+      - Removed the "Note, File, DNS are available only with domain-validated products" restriction from Order SSL and Renewal.
+      - Order SSL accepts multiple emails for Sectigo SANs.
+      - SANs must not include the subject domain carried in the CSR.
+      - 'Placing/renewing a Sectigo SSL with DNS or File DCV now returns md5, sha256 and uniquevalue.'
+    highlights: Pagination arrives on the order list; Sectigo DCV validation values are returned.
+  - version: '4.07'
+    date: null
+    breaking: false
+    changes:
+      - 'CheckWhois improved — now returns send_date and the email address.'
+  - version: '4.06'
+    date: null
+    breaking: false
+    additions:
+      - Domain Whois Verification (checkWhoisVF)
+      - Resend Whois Verification mail (resendWhoisVF)
+    changes:
+      - ID Shield interface update
+  - version: '4.05'
+    date: null
+    breaking: false
+    additions:
+      - File-based and DNS-based SSL validation methods on the ordering request
+announcements:
+  - date: '2020-08-04'
+    title: TLS/SSL certificate validity period shifts to one-year maximum
+    url: https://www.onlinenic.com/en/News/newsinfo/2741.html
+  - date: '2020-03-17'
+    title: 'OnlineNIC: Share important API Update with you'
+    url: https://www.onlinenic.com/en/News/newsinfo/2740.html
+    note: Announces changeDCVmethod and checkDomainDcv on the SSL API call surface.
+  - date: '2020-03-17'
+    title: SSL update on products, pricing and API
+    url: https://www.onlinenic.com/en/News/newsinfo/2739.html
+  - date: '2020-01-21'
+    title: SSL New Price
+    url: https://www.onlinenic.com/en/News/newsinfo/2738.html
+  - date: '2020-01-08'
+    title: What's an SSL Site Seal and how to get it
+    url: https://www.onlinenic.com/en/News/newsinfo/2737.html
+  - date: '2019-12-18'
+    title: Move your cPanel site to OnlineNIC Cloud
+    url: https://www.onlinenic.com/en/News/newsinfo/2736.html
+x-finding:
+  latest_documented_change: '2020-08-04'
+  note: >-
+    Both dated surfaces stop in 2020. The API itself is live and answering today — probed 2026-09-17 —
+    but nothing OnlineNIC publishes records a change to it in more than six years. For an integrator
+    that is the material fact: there is no way to learn from the vendor whether the contract has moved.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

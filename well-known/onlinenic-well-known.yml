@@ -1,0 +1,164 @@
+specification: API Commons Well-Known
+specificationVersion: '0.1'
+provider: OnlineNIC
+providerId: onlinenic
+generated: '2026-09-17'
+method: probed
+source: live HTTPS probes of every host this record knows
+description: 'Well-known discovery probe for every OnlineNIC host in this record: the registrable domain
+  and www, the live API host (api.onlinenic.com), the documented OTE test host (ote.onlinenic.com) and
+  the support/helpdesk host. Every named path was requested. NOTHING WAS FOUND — every path on every reachable
+  host returns a 404 HTML error page, and the OTE host did not answer at all. This file records a measured
+  absence; no WellKnown or SecurityTxt pointer is wired into apis.yml, because there is no served document
+  to point at.'
+result: none
+documents_found: 0
+hosts:
+- host: onlinenic.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    note: 404 HTML error page — no document served
+  - path: /.well-known/openid-configuration
+    status: 404
+    note: 404 HTML error page — no document served
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    note: 404 HTML error page — no document served
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+    note: 404 HTML error page — no document served
+  - path: /.well-known/api-catalog
+    status: 404
+    note: 404 HTML error page — no document served
+  - path: /.well-known/ai-plugin.json
+    status: 404
+    note: 404 HTML error page — no document served
+  - path: /.well-known/agent-card.json
+    status: 404
+    note: 404 HTML error page — no document served
+  - path: /.well-known/agent.json
+    status: 404
+    note: 404 HTML error page — no document served
+  - path: /.well-known/aauth-resource.json
+    status: 404
+    note: 404 HTML error page — no document served
+- host: www.onlinenic.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    note: 404 HTML error page — no document served
+  - path: /.well-known/openid-configuration
+    status: 404
+    note: 404 HTML error page — no document served
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    note: 404 HTML error page — no document served
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+    note: 404 HTML error page — no document served
+  - path: /.well-known/api-catalog
+    status: 404
+    note: 404 HTML error page — no document served
+  - path: /.well-known/ai-plugin.json
+    status: 404
+    note: 404 HTML error page — no document served
+  - path: /.well-known/agent-card.json
+    status: 404
+    note: 404 HTML error page — no document served
+  - path: /.well-known/agent.json
+    status: 404
+    note: 404 HTML error page — no document served
+  - path: /.well-known/aauth-resource.json
+    status: 404
+    note: 404 HTML error page — no document served
+- host: api.onlinenic.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    note: 404 HTML error page — no document served
+  - path: /.well-known/openid-configuration
+    status: 404
+    note: 404 HTML error page — no document served
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    note: 404 HTML error page — no document served
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+    note: 404 HTML error page — no document served
+  - path: /.well-known/api-catalog
+    status: 404
+    note: 404 HTML error page — no document served
+  - path: /.well-known/ai-plugin.json
+    status: 404
+    note: 404 HTML error page — no document served
+  - path: /.well-known/agent-card.json
+    status: 404
+    note: 404 HTML error page — no document served
+  - path: /.well-known/agent.json
+    status: 404
+    note: 404 HTML error page — no document served
+  - path: /.well-known/aauth-resource.json
+    status: 404
+    note: 404 HTML error page — no document served
+- host: helpdesk.onlinenic.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    note: 404 HTML error page — no document served
+  - path: /.well-known/openid-configuration
+    status: 404
+    note: 404 HTML error page — no document served
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    note: 404 HTML error page — no document served
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+    note: 404 HTML error page — no document served
+  - path: /.well-known/api-catalog
+    status: 404
+    note: 404 HTML error page — no document served
+  - path: /.well-known/ai-plugin.json
+    status: 404
+    note: 404 HTML error page — no document served
+  - path: /.well-known/agent-card.json
+    status: 404
+    note: 404 HTML error page — no document served
+  - path: /.well-known/agent.json
+    status: 404
+    note: 404 HTML error page — no document served
+  - path: /.well-known/aauth-resource.json
+    status: 404
+    note: 404 HTML error page — no document served
+- host: ote.onlinenic.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 0
+    note: host did not answer; TCP/TLS connection failed on every attempt
+  - path: /.well-known/openid-configuration
+    status: 0
+    note: host did not answer; TCP/TLS connection failed on every attempt
+  - path: /.well-known/oauth-authorization-server
+    status: 0
+    note: host did not answer; TCP/TLS connection failed on every attempt
+  - path: /.well-known/oauth-protected-resource
+    status: 0
+    note: host did not answer; TCP/TLS connection failed on every attempt
+  - path: /.well-known/api-catalog
+    status: 0
+    note: host did not answer; TCP/TLS connection failed on every attempt
+  - path: /.well-known/ai-plugin.json
+    status: 0
+    note: host did not answer; TCP/TLS connection failed on every attempt
+  - path: /.well-known/agent-card.json
+    status: 0
+    note: host did not answer; TCP/TLS connection failed on every attempt
+  - path: /.well-known/agent.json
+    status: 0
+    note: host did not answer; TCP/TLS connection failed on every attempt
+  - path: /.well-known/aauth-resource.json
+    status: 0
+    note: host did not answer; TCP/TLS connection failed on every attempt
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

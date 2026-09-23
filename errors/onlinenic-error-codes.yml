@@ -1,0 +1,327 @@
+specification: API Commons Error Catalog
+specificationVersion: '0.1'
+provider: OnlineNIC
+providerId: onlinenic
+generated: '2026-09-17'
+method: searched
+source: https://www.onlinenic.com/cp_english/template_api/download/Onlinenic_API_v4.0.9.2_Reseller_Guide.pdf#6.1
+docs: https://www.onlinenic.com/cp_english/template_api/api_help.php
+description: 'Complete error-code registry for the OnlineNIC Reseller API v4, transcribed verbatim from Addendum
+  6.1 "Response Parameters" of the provider-published API 4.0.9 Reseller Guide. This is the non-payments sibling
+  of a decline-code catalogue: OnlineNIC is a domain registrar and SSL reseller, so the registry mixes request/auth
+  faults with registry-side domain, contact, host, transfer and ID Shield failures. Codes are flat integers carried
+  in the response envelope, NOT HTTP status codes — every documented response is HTTP 200 with the outcome in the
+  body.'
+format: proprietary-envelope
+rfc9457: false
+envelope:
+  content_type: application/json
+  fields:
+  - name: code
+    type: integer
+    description: Status code from this registry; 1000 means success.
+  - name: msg
+    type: string
+    description: Human-readable message. The guide calls the field "message" in the parameter tables and returns
+      it as "msg" on the wire.
+  - name: data
+    type: object
+    description: Command-specific payload, present only on success for commands that return data.
+  note: 'Observed live: GET https://api.onlinenic.com/api4/ssl/index.php returns HTTP 200 with {"code":1001,"msg":"Invalid
+    request."} and an unauthenticated POST returns HTTP 200 with {"code":1004,"msg":"Required parameter missing(user)."}.
+    The transport status code carries no error information, so a client MUST parse the body.'
+success_code: 1000
+error_count: 78
+code_count: 79
+ranges:
+- range: 1000-1011
+  meaning: Protocol, request-shape and authentication faults
+- range: 1012-1033
+  meaning: SSL ordering, order-state and billing faults
+- range: 1034-1068
+  meaning: Domain, contact, host and transfer faults (registry-side)
+- range: 1069-1075
+  meaning: ID Shield privacy service and Whois verification
+- range: 2000-2002
+  meaning: Registrant change approval workflow (asynchronous, pending state)
+errors:
+- code: 1000
+  message: Command completed successfully.
+  category: success
+  description: Command succeeds
+- code: 1001
+  message: Invalid request.
+  category: request
+  description: Invalid Request
+- code: 1002
+  message: Command does not exist.
+  category: request
+  description: The method doesn't exist. You may check the method
+- code: 1003
+  message: Command use error.
+  category: request
+  description: Requesting format error
+- code: 1004
+  message: Required parameter missing({$parameter}).
+  category: request
+  description: Required parameter missing; check if you have provided required parameters
+- code: 1005
+  message: Object does not exist(user).
+  category: auth
+  description: Invalid reseller ID
+- code: 1006
+  message: Authentication error.
+  category: auth
+  description: Authentication error. Check Security Token and password.
+- code: 1007
+  message: Parameter value syntax error({$parameter}).
+  category: request
+  description: For example $parameter=CSR, which means CSR error.
+- code: 1008
+  message: Something error in network.
+  category: server
+  description: API server cannot proceed with your request, please contact support.
+- code: 1009
+  message: Parameter value syntax error(CSR).{$msg}
+  category: ssl
+  description: Wildcard/CSR common-name mismatch; e.g. 'Your Domain Name must contain ONE *' or 'Your Domain Name
+    may not contain a *'.
+- code: 1010
+  message: Parameter value range error({$parameter}).
+  category: request
+  description: For example $parameter=period
+- code: 1011
+  message: Command failed.{$parameter}
+  category: server
+- code: 1012
+  message: Get price failed.
+  category: billing
+  description: Not able to get product price.
+- code: 1013
+  message: Please input a valid CSR for wildcard domain.
+  category: ssl
+  description: The Common name in CSR is not a Wildcard Domain.
+- code: 1014
+  message: Order is already exists.
+  category: order
+  description: Order is already exists.
+- code: 1015
+  message: Create order failed.
+  category: order
+  description: Create order failed.
+- code: 1016
+  message: Order does not exist.
+  category: order
+  description: Order does not exist.
+- code: 1017
+  message: The new mailbox must be included in approval email list.
+  category: ssl
+  description: Please provide a valid Approver Email list
+- code: 1018
+  message: Order status does not allow this operation.
+  category: order
+  description: The modification cannot be done for this order. Please check order status.
+- code: 1019
+  message: Order information error.
+  category: order
+  description: There is an error in order information.
+- code: 1020
+  message: Invalid API key.
+  category: auth
+  description: Invalid API key
+- code: 1021
+  message: Your IP does not exist in IP whitelist.
+  category: auth
+  description: Please add your IP address to whitelist first in control panel.
+- code: 1022
+  message: Sans count over max.
+  category: ssl
+  description: The number of SANs exceed the maximum SANs permitted.
+- code: 1023
+  message: Billing error, please check on your account balance.
+  category: billing
+  description: Billing failed, please check your account balance.
+- code: 1024
+  message: Operation timed out.
+  category: server
+  description: Connection time out; check the network connection with our server.
+- code: 1025
+  message: Get Price error.{$parameter}
+  category: billing
+  description: Not able to get product price.
+- code: 1026
+  message: This type of order is not supported.
+  category: order
+  description: The method does not support this type of product
+- code: 1027
+  message: Update order failed.
+  category: order
+  description: Updating order failed
+- code: 1028
+  message: Operation denied. Order has been refunded.
+  category: order
+  description: Operation failed, the order has been refunded
+- code: 1029
+  message: The order cannot be canceled in current status.
+  category: order
+  description: The order cannot be canceled, please check on order status.
+- code: 1030
+  message: Please add at least $98.9 prepayment to your account.
+  category: billing
+  description: Minimum prepayment required before the account can transact.
+- code: 1031
+  message: Your order has been canceled, please contact your upstream provider for refunds.
+  category: billing
+  description: Sectigo orders require an email to OnlineNIC for refund; the order then moves to Refunded status.
+- code: 1032
+  message: You have already submitted a similar order.
+  category: order
+  description: The order already exists. Please don't submit duplicate orders.
+- code: 1033
+  message: No existing orders.
+  category: order
+  description: There is not existing order under your account.
+- code: 1034
+  message: Failed to connect to server.
+  category: server
+- code: 1035
+  message: Domain existed in our database. Please check with support.
+  category: domain
+- code: 1036
+  message: Check domain failed.{$msg}
+  category: domain
+- code: 1037
+  message: .CN auto-registration is temporarily suspended. Please contact sales representative for manual registration.
+  category: domain
+- code: 1038
+  message: The length of {$parameter} should be between 1 and 60.
+  category: request
+- code: 1039
+  message: The length of {$parameter} should be between 1 and 10.
+  category: request
+- code: 1040
+  message: The length of {$parameter} should be between 1 and 17.
+  category: request
+- code: 1041
+  message: Failed to manage contact.{$msg}
+  category: contact
+- code: 1042
+  message: The length of {$parameter} should be between 1 and 16.
+  category: request
+- code: 1043
+  message: Failed to check contact.{$msg}
+  category: contact
+- code: 1044
+  message: Failed to info contact.{$msg}
+  category: contact
+- code: 1045
+  message: The length of {$parameter} should be between 1 and 20.
+  category: request
+- code: 1046
+  message: Failed to register domain.{$msg}
+  category: domain
+- code: 1047
+  message: Failed to info domain.{$msg}
+  category: domain
+- code: 1048
+  message: Failed to delete domain.{$msg}
+  category: domain
+- code: 1049
+  message: Failed to update domain status.{$msg}
+  category: domain
+- code: 1050
+  message: Operation failed.{$msg}
+  category: server
+- code: 1051
+  message: Failed to update domain dns.{$msg}
+  category: domain
+- code: 1052
+  message: Failed to update auth code.{$msg}
+  category: domain
+- code: 1053
+  message: The length of {$parameter} should be between 6 and 16.
+  category: request
+- code: 1054
+  message: Failed to get auth code.{$msg}
+  category: domain
+- code: 1055
+  message: Failed to renew domain.{$msg}
+  category: domain
+- code: 1056
+  message: Failed to check hostname.{$msg}
+  category: host
+- code: 1057
+  message: Failed to info hostname.{$msg}
+  category: host
+- code: 1058
+  message: Failed to create hostname.{$msg}
+  category: host
+- code: 1059
+  message: Failed to delete hostname.{$msg}
+  category: host
+- code: 1060
+  message: Failed to update hostname.{$msg}
+  category: host
+- code: 1061
+  message: Failed to initiate transfer.{$msg}
+  category: transfer
+- code: 1062
+  message: Failed to query domain status.{$msg}
+  category: transfer
+- code: 1063
+  message: Failed to cancel domain transfer.{$msg}
+  category: transfer
+- code: 1064
+  message: Premium domain requires additional parameters(fee).
+  category: domain
+- code: 1065
+  message: Unmatched premium domain fee.
+  category: domain
+- code: 1066
+  message: Failed to change domain contact id.
+  category: contact
+- code: 1067
+  message: API currently does not support .cc domain.
+  category: domain
+- code: 1068
+  message: This interface does not support .eu domain
+  category: domain
+- code: 1069
+  message: Failed to apply ID Shield.
+  category: idshield
+- code: 1070
+  message: This domain is not on ID Shield service.
+  category: idshield
+- code: 1071
+  message: This domain is already protected by ID Shield.
+  category: idshield
+- code: 1072
+  message: Failed to resume ID Shield.
+  category: idshield
+- code: 1073
+  message: Failed to suspend ID Shield.
+  category: idshield
+- code: 1074
+  message: Server too busy , please try again.
+  category: server
+- code: 1075
+  message: Whois contact has been verified.
+  category: whois
+- code: 2000
+  message: You've submitted update request. Please approve the change via clicking the link in the email sent to
+    its current registrant email address.
+  category: contact
+- code: 2001
+  message: One registrant change request is still pending.
+  category: contact
+- code: 2002
+  message: Pending queue
+  category: contact
+gaps:
+- No HTTP status differentiation — every documented outcome is HTTP 200.
+- No RFC 9457 application/problem+json representation.
+- No stable machine-readable error type URIs; the integer code is the only identifier.
+- Messages interpolate {$parameter} and {$msg} at runtime, so exact strings vary.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

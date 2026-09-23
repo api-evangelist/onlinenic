@@ -1,0 +1,209 @@
+specification: API Commons Data Model
+specificationVersion: '0.1'
+provider: OnlineNIC
+providerId: onlinenic
+generated: '2026-09-17'
+method: derived
+source: >-
+  https://www.onlinenic.com/cp_english/template_api/download/Onlinenic_API_v4.0.9.2_Reseller_Guide.pdf
+description: >-
+  Entity graph for the OnlineNIC Reseller API v4, derived from the command surface and the request /
+  response parameter tables in the provider's API 4.0.9 Reseller Guide. There is no OpenAPI and no JSON
+  Schema to walk $refs through, so relationships are read from the identifier a command requires and
+  the identifier it returns. Only entities the guide actually names are listed; nothing was inferred
+  from the product category.
+derivation_note: >-
+  Derived from documentation rather than from a machine-readable contract. Field-level types are not
+  asserted where the guide does not state them.
+entities:
+  - name: Reseller
+    id_field: user
+    description: The partner account. Every command carries it; it is the tenant boundary.
+    relationships:
+      - has_many: SSLOrder
+        via: user
+      - has_many: Domain
+        via: user
+      - has_many: Contact
+        via: user
+      - has_many: Host
+        via: user
+  - name: SSLOrder
+    id_field: orderid
+    description: An SSL certificate purchase and its lifecycle state.
+    states:
+      - Pending
+      - Complete
+      - Cancelled
+      - refunded
+    key_fields:
+      - orderid
+      - status
+      - completedate
+      - productid
+      - csr
+      - approvalemail
+      - dcvmethod
+    commands:
+      create: orderSSL
+      read: [getSSLOrderInfo, getSSLOrderList, getSSLOrderId]
+      renew: renewSSL
+      cancel: cancelSSL
+      revoke: revokeSSL
+      reissue: reissueSSL
+      fetch_certificate: getSSLCert
+    relationships:
+      - belongs_to: Reseller
+        via: user
+      - has_one: SSLProduct
+        via: productid
+      - has_one: CSR
+        via: csr
+      - has_many: ApprovalEmail
+        via: approvalemail
+  - name: SSLProduct
+    id_field: productid
+    description: >-
+      A purchasable certificate SKU. The guide's Addendum 6.2 enumerates the catalogue with max
+      validity, SAN maximum, wildcard support and multi-domain support per product.
+    key_fields:
+      - productid
+      - product name
+      - type
+      - max validation
+      - SAN max
+      - wildcard supported
+    commands:
+      read: [getSSLProductDetails, getSSLprice]
+  - name: CSR
+    id_field: null
+    description: >-
+      Certificate signing request submitted with an order. parseCsr decodes it and returns the parsed
+      fields; several errors (1009, 1013) are CSR validation failures.
+    commands:
+      parse: parseCsr
+    relationships:
+      - belongs_to: SSLOrder
+  - name: ApprovalEmail
+    id_field: null
+    description: Domain-control-validation approver address for an SSL order.
+    commands:
+      list: getApprovalEmailList
+      change: changeValidationEmail
+      resend: resendApprovalEmail
+      change_method: changeDCVmethod
+      check: checkDomainDcv
+    relationships:
+      - belongs_to: SSLOrder
+        via: orderid
+  - name: Domain
+    id_field: domain
+    description: A registered domain name held in the reseller's account.
+    key_fields:
+      - domain
+      - period
+      - status
+      - authcode
+      - dns
+    commands:
+      availability: checkDomain
+      create: registerDomain
+      read: infoDomain
+      renew: renewDomain
+      update_status: updateDomainStatus
+      update_dns: updateDomainDns
+      set_password: setDomainPassword
+    relationships:
+      - belongs_to: Reseller
+        via: user
+      - has_one: AuthCode
+        via: authcode
+      - has_many: Host
+        via: dns
+      - has_many: Contact
+        via: contact id (registrant / admin / tech / billing)
+      - has_one: IDShield
+        via: domain
+      - has_one: Transfer
+        via: domain
+      - has_one: WhoisVerification
+        via: domain
+  - name: Contact
+    id_field: contactid
+    description: >-
+      A reusable registrant/admin/tech/billing contact object, created independently and then bound to
+      a domain. Registrant change is asynchronous and requires email approval (codes 2000-2002).
+    commands:
+      create: createContact
+      read: infoContact
+      update: updateContact
+      bind: domainChangeContact
+    relationships:
+      - belongs_to: Reseller
+        via: user
+      - has_many: Domain
+        via: contactid
+  - name: Host
+    id_field: hostname
+    description: A private nameserver (glue record) registered under a domain.
+    commands:
+      availability: checkHost
+      create: createHost
+      read: infoHost
+      update: updateHost
+      delete: deleteHost
+    relationships:
+      - belongs_to: Domain
+  - name: AuthCode
+    id_field: null
+    description: EPP transfer authorisation code for a domain.
+    commands:
+      read: getAuthCode
+      update: updateAuthCode
+    relationships:
+      - belongs_to: Domain
+  - name: Transfer
+    id_field: domain
+    description: An inbound registrar transfer and its status.
+    commands:
+      create: transferDomain
+      read: queryTransferStatus
+      cancel: cancelDomainTransfer
+    relationships:
+      - belongs_to: Domain
+  - name: IDShield
+    id_field: domain
+    description: OnlineNIC's registrant privacy service applied to a domain.
+    commands:
+      create: applyIDShield
+      read: infoIDShield
+      suspend: suspendIDShield
+      resume: resumeIDShield
+    relationships:
+      - belongs_to: Domain
+  - name: WhoisVerification
+    id_field: domain
+    description: >-
+      ICANN registrant-email verification state. checkWhoisVF returns status and (since 4.07) send_date
+      and the email address; queuing means mail is sent within 24 hours.
+    commands:
+      read: checkWhoisVF
+      resend: resendWhoisVF
+    relationships:
+      - belongs_to: Domain
+entity_count: 12
+id_conventions:
+  - field: orderid
+    scope: SSL orders
+  - field: contactid
+    scope: Contacts; the only cross-entity foreign key the guide names explicitly
+  - field: domain
+    scope: The domain name itself is the identifier for Domain, Transfer, IDShield and WhoisVerification
+  - field: hostname
+    scope: Hosts
+id_convention_note: >-
+  Identifiers are bare strings with no type prefix, so an agent cannot tell an id's entity from its
+  value — only from the command it came out of.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

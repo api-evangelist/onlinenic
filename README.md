@@ -64,32 +64,68 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-OnlineNIC offers a RESTful API with JSON format response for partners to directly manage their products and orders. The API helps partners automate the purchase process and empower them to provide endusers a better user experience.
+OnlineNIC, Inc. is an ICANN-accredited domain registrar (IANA ID 82) and wholesale reseller platform,
+operating since 1999, selling domain names across roughly 400 TLDs, SSL/TLS certificates from DigiCert,
+GeoTrust, RapidSSL, Sectigo and Symantec, business email, reseller and cloud hosting, escrow and
+domain-privacy services. It publishes a partner-facing Reseller API — currently build 4.0.9 — for
+domains, contacts, nameservers, EPP auth codes, registrar transfers, ID Shield privacy, Whois
+verification and the full SSL certificate lifecycle.
 
 **URL:** [Visit APIs.json URL](https://raw.githubusercontent.com/api-evangelist/onlinenic/refs/heads/main/apis.yml)
 
 ## Scope
 
 - **Type:** Index
-- **Position:** Consumer
+- **Position:** Producing
 - **Access:** 3rd-Party
 
 ## Timestamps
 
 - **Created:** 2025-02-09
-- **Modified:** 2026-04-28
+- **Modified:** 2026-09-17
 
 ## APIs
 
-### OnlineNIC
+### OnlineNIC Reseller API
 
-OnlineNIC offers a RESTful API with JSON format response for partners to directly manage their products and orders.
+Twenty-six domain commands and seventeen SSL commands over an RPC-style HTTPS surface: two PHP
+endpoints, a `command` query parameter, POST only, and a JSON envelope carrying an integer status code
+on every response (including errors — the HTTP status is always 200). Authentication is an API key plus
+a per-request MD5 token over the reseller id, password digest, timestamp and command name, with an
+optional source-IP allowlist.
 
-**Human URL:** [https://wiki.onlinenic.com/#!index.md](https://wiki.onlinenic.com/#!index.md)
+**Human URL:** [https://www.onlinenic.com/cp_english/template_api/api_help.php](https://www.onlinenic.com/cp_english/template_api/api_help.php)
+
+**Base URL:** `https://api.onlinenic.com/api4/`
 
 #### Properties
 
-- [Documentation](https://wiki.onlinenic.com/#!index.md)
+- [Documentation](https://www.onlinenic.com/cp_english/template_api/api_help.php)
+- [API 4.0.9 Reseller Guide (PDF)](https://www.onlinenic.com/cp_english/template_api/download/Onlinenic_API_v4.0.9.2_Reseller_Guide.pdf)
+- [API 3.4 Usage Guide (PDF, deprecated)](https://onlinenic.com/cp_english/template_api/download/API_EN_Version_3.4.pdf)
+- [OnlineNIC PHP SDK](https://www.onlinenic.com/cp_english/template_api/download.php?f=sdk_php.zip)
+- [OnlineNIC Pro for WHMCS](https://www.onlinenic.com/en/Module/index/17.html)
+
+## Notes from the 2026-09-17 enrichment pass
+
+- **No machine-readable contract.** The API reference ships only as a PDF. `/openapi.json`,
+  `/swagger.json`, `/api-docs` and `?wsdl` were probed on both `www.onlinenic.com` and
+  `api.onlinenic.com` and all return 404 or the ordinary JSON error envelope. No AsyncAPI, GraphQL SDL,
+  Postman collection or JSON Schema exists either.
+- **The API is live.** `GET https://api.onlinenic.com/api4/ssl/index.php` returns
+  `{"code":1001,"msg":"Invalid request."}` and an unauthenticated POST returns
+  `{"code":1004,"msg":"Required parameter missing(user)."}`.
+- **The recorded docs host was dead.** `wiki.onlinenic.com` returns "No forward mapping for this host."
+  and serves a mismatched certificate; the record has been repointed at the live reference page.
+- **The documented OTE sandbox host did not answer.** `ote.onlinenic.com` resolves but did not complete
+  a connection over HTTP or HTTPS on 2026-09-17.
+- **Every first-party package predates the current API.** The PHP SDK (2015) and the WHMCS module
+  (2019) both drive the deprecated 3.4 socket protocol on port 30009; nothing first-party targets
+  API v4.
+- **No published rate limits and no idempotency key.** Two scaffold artifacts that had invented both
+  (`plans/` and `rate-limits/`) were replaced with what the provider actually publishes.
+- **Nothing in `/.well-known/`** on any host, no MCP server, no A2A agent card, no status page and no
+  GitHub organisation.
 
 ## Maintainers
 

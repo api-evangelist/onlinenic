@@ -1,0 +1,113 @@
+specification: API Commons Authentication
+specificationVersion: '0.1'
+provider: OnlineNIC
+providerId: onlinenic
+generated: '2026-09-17'
+method: searched
+source: https://www.onlinenic.com/cp_english/template_api/download/Onlinenic_API_v4.0.9.2_Reseller_Guide.pdf
+docs: https://www.onlinenic.com/cp_english/template_api/api_help.php
+description: >-
+  Authentication profile for the OnlineNIC Reseller API v4 (domain + SSL), transcribed from
+  section 2.2 "Security Token" of the provider-published API 4.0.9 Reseller Guide (PDF). There
+  is no OpenAPI securitySchemes block to derive from — OnlineNIC publishes no machine-readable
+  contract — so every field below is read from the provider's own reference document and from a
+  live unauthenticated probe of the API host.
+styles:
+  - api-key
+  - signed-request
+  - ip-allowlist
+schemes:
+  - id: apikey
+    type: apiKey
+    in: formData
+    name: apikey
+    required: true
+    description: >-
+      API key issued to the reseller. The guide states "This parameter is required for security
+      Authentication. Partner can get this in Reseller Control panel." Sent as a POST body
+      parameter, not as a header.
+    issued_via: Reseller Control Panel
+  - id: token
+    type: signed-request
+    in: formData
+    name: token
+    required: true
+    algorithm: md5
+    description: >-
+      Per-request security token. Token = MD5(user + MD5(password) + timestamp + command),
+      lowercase 32-character MD5. Binds the request to the reseller id, the account password,
+      the request timestamp and the command name.
+    components:
+      - name: user
+        description: Reseller ID
+      - name: password
+        description: Reseller account password (hashed, never sent in the clear)
+      - name: timestamp
+        description: Request timestamp; a request is valid for 10 minutes
+      - name: command
+        description: Name of the method being called
+    note: >-
+      MD5 is used both for the password digest and for the request signature. It is a broken
+      hash for signature purposes; HMAC-SHA256 would be the modern equivalent of this design.
+      Recorded as an observation about the published scheme, not a vulnerability claim.
+  - id: ip-allowlist
+    type: network
+    required: false
+    description: >-
+      IP White List. "By adding IP to white list in Reseller control panel, the IP address will
+      be whitelisted, and other IP address will be blocked from accessing API server. If the IP
+      White list omitted, system will not set limitation with the IP address." Optional and
+      off by default. Error 1021 ("Your IP does not exist in IP whitelist") is returned when it
+      is configured and the caller is not on it.
+    applies_to: live
+    note: The OTE test environment does not require IP allowlisting.
+required_parameters:
+  - user
+  - timestamp
+  - token
+  - apikey
+transport:
+  protocol: https
+  method: POST
+  note: >-
+    "API interface response to HTTPS call, and the request type must be POST." Credentials
+    travel in the POST body; there is no Authorization header and no bearer token.
+oauth2: false
+openid_connect: false
+mutual_tls: false
+scopes:
+  supported: false
+  note: >-
+    The API has no scope or permission model. A reseller API key carries the full command
+    surface for that reseller account, so scopes/ is deliberately not emitted.
+errors:
+  - code: 1006
+    message: Authentication error.
+    meaning: Security token or password is wrong.
+  - code: 1020
+    message: Invalid API key.
+  - code: 1021
+    message: Your IP does not exist in IP whitelist.
+  - code: 1005
+    message: Object does not exist(user).
+    meaning: Invalid reseller ID.
+evidence:
+  - url: https://api.onlinenic.com/api4/ssl/index.php
+    method: GET
+    status: 200
+    body: '{"code":1001,"msg":"Invalid request."}'
+    note: Live host answers the documented JSON envelope; GET is rejected as the guide states.
+  - url: https://api.onlinenic.com/api4/domain/index.php?command=checkDomain
+    method: POST
+    status: 200
+    body: '{"code":1004,"msg":"Required parameter missing(user)."}'
+    note: Unauthenticated POST confirms `user` is the first required credential parameter.
+legacy:
+  - api: OnlineNIC API 3.4 (deprecated)
+    transport: raw TCP socket, XML request/response
+    port: 30009
+    auth: chksum over category + action + params + cltrid, credentials in config
+    source: https://www.onlinenic.com/cp_english/template_api/download.php?f=sdk_php.zip
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

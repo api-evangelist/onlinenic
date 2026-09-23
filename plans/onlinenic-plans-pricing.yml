@@ -4,136 +4,114 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: OnlineNIC
 providerId: onlinenic
 created: '2026-05-04'
-# Provenance stamped 2026-08-11: this artifact was written by the API Evangelist
-# bulk sweep dated 2026-05-04, not harvested from the provider. See roadmap#35.
-method: generated
-modified: '2026-05-04'
-tags: []
-description: Machine-readable plans and pricing scaffold for this API provider. Conforms to the API Commons
-  Plans schema. Tier limits and prices are scaffold defaults; replace with provider-published values.
+modified: '2026-09-17'
+generated: '2026-09-17'
+method: searched
+source: https://www.onlinenic.com/en/Domains/index/19.html
+docs: https://www.onlinenic.com/en/Reseller/index/18.html
+tags:
+  - Domains
+  - Reseller
+  - Pricing
+description: >-
+  OnlineNIC's published plan structure. NOTE ON PROVENANCE: this file previously carried a
+  Free/Professional/Enterprise scaffold with invented quotas and TBD prices, written by a 2026-05-04
+  bulk sweep and never harvested from the provider. That scaffold was wrong in kind, not just in
+  detail — OnlineNIC does not sell API access in tiers at all. It was replaced on 2026-09-17 with
+  what the provider actually publishes on its own pricing page.
+plan_model: prepayment-tier
+api_pricing:
+  model: free-with-account
+  note: >-
+    API access is not a priced product. The reseller pages state "No setup fees, no annual fees, sign
+    up now to get API access" and "FREE Use of Reseller API/template System". What a reseller pays for
+    is the underlying domain, certificate and hosting inventory; the tier they sit in determines the
+    wholesale price of that inventory, not their API entitlement. There is no request quota, no API
+    metering and no overage.
+  source: https://www.onlinenic.com/en/Module/index/17.html
+plan_count: 4
 plans:
-  - id: onlinenic-free
-    name: Free
-    type: freemium
-    description: Free entry tier for the OnlineNIC API surface. Intended for evaluation, prototyping,
-      and low-volume integrations. Real limits and pricing must be reconciled with the provider's published
-      plan documentation.
-    entries:
-      - label: API Requests
-        description: Monthly API request quota across all included endpoints
-        name: api_requests
-        type: quota
-        metric: requests
-        limit: 1000
-        timeFrame: month
-        geo: global
-        domains: []
-        unit: 1
-        price: '0.00'
-        userMultiplied: false
-      - label: Rate Limit
-        description: Maximum requests per minute on the free tier
-        name: rate_limit
-        type: rate
-        metric: requests_per_minute
-        limit: 10
-        timeFrame: minute
-        geo: global
-        domains: []
-        unit: 1
-        price: '0.00'
-        userMultiplied: false
-    elements:
-      - name: Public Documentation
-      - name: Community Support
-      - name: Sandbox Access
-      - name: OnlineNIC
-  - id: onlinenic-pro
-    name: Professional
-    type: paid
-    description: Production tier for OnlineNIC. Provides higher quotas, priority support, and access to
-      the broader API portfolio. Pricing placeholder; align with the provider's pricing page.
-    entries:
-      - label: API Requests
-        description: Monthly API request quota
-        name: api_requests
-        type: quota
-        metric: requests
-        limit: 100000
-        timeFrame: month
-        geo: global
-        domains: []
-        unit: 1
-        price: TBD
-        userMultiplied: false
-      - label: Rate Limit
-        description: Maximum requests per minute on the professional tier
-        name: rate_limit
-        type: rate
-        metric: requests_per_minute
-        limit: 100
-        timeFrame: minute
-        geo: global
-        domains: []
-        unit: 1
-        price: '0.00'
-        userMultiplied: false
-      - label: Overage
-        description: Per-request price after monthly quota is exceeded
-        name: overage
-        type: metered
-        metric: requests
-        limit: -1
-        timeFrame: month
-        geo: global
-        domains: []
-        unit: 1000
-        price: TBD
-        userMultiplied: false
-    elements:
-      - name: All Production Endpoints
-      - name: Email Support
-      - name: SLA Targets
-      - name: Webhook Subscriptions
-      - name: OnlineNIC
-  - id: onlinenic-enterprise
-    name: Enterprise
-    type: enterprise
-    description: Custom-negotiated tier for OnlineNIC. Includes dedicated capacity, contractual SLAs,
-      security review, data residency options, and named technical account management.
-    entries:
-      - label: API Requests
-        description: Negotiated request volume; -1 indicates uncapped subject to fair use
-        name: api_requests
-        type: quota
-        metric: requests
-        limit: -1
-        timeFrame: month
-        geo: configurable
-        domains: []
-        unit: 1
-        price: custom
-        userMultiplied: false
-      - label: Rate Limit
-        description: Negotiated burst and steady-state rate
-        name: rate_limit
-        type: rate
-        metric: requests_per_minute
-        limit: 1000
-        timeFrame: minute
-        geo: configurable
-        domains: []
-        unit: 1
-        price: custom
-        userMultiplied: false
-    elements:
-      - name: Unlimited / Negotiated Volume
-      - name: 24/7 Dedicated Support
-      - name: Contractual SLA
-      - name: Security & Compliance Review
-      - name: Dedicated Account Manager
-      - name: Custom Data Residency
-      - name: OnlineNIC
+  - id: onlinenic-platinum
+    name: Platinum
+    type: prepayment-tier
+    price: '1129.00'
+    currency: USD
+    billing_period: one-time prepayment
+    description: >-
+      Highest reseller tier. "Again, all prepayment can be spent" — the prepayment is account credit,
+      not a fee. Buys the lowest wholesale prices across the TLD and certificate catalogue.
+    example_wholesale_prices:
+      - product: .COM registration
+        price: '11.29'
+      - product: .ORG registration
+        price: '11.86'
+      - product: .INFO registration
+        price: '22.49'
+  - id: onlinenic-gold
+    name: Gold
+    type: prepayment-tier
+    price: '565.00'
+    currency: USD
+    billing_period: one-time prepayment
+    example_wholesale_prices:
+      - product: .COM registration
+        price: '11.59'
+      - product: .ORG registration
+        price: '12.26'
+      - product: .INFO registration
+        price: '22.99'
+  - id: onlinenic-silver
+    name: Silver
+    type: prepayment-tier
+    price: '268.00'
+    currency: USD
+    billing_period: one-time prepayment
+    example_wholesale_prices:
+      - product: .COM registration
+        price: '12.09'
+      - product: .ORG registration
+        price: '12.76'
+      - product: .INFO registration
+        price: '23.29'
+  - id: onlinenic-bronze
+    name: Bronze
+    type: prepayment-tier
+    price: '113.00'
+    currency: USD
+    billing_period: one-time prepayment
+    example_wholesale_prices:
+      - product: .COM registration
+        price: '12.59'
+      - product: .ORG registration
+        price: '13.26'
+      - product: .INFO registration
+        price: '23.99'
+minimum_prepayment:
+  amount: '98.90'
+  currency: USD
+  source: >-
+    Error code 1030 in the API reference — "Please add at least $98.9 prepayment to your account." The
+    API refuses to transact below this balance, which makes it a hard runtime constraint on an agent,
+    not just a commercial term.
+billing_errors:
+  - code: 1023
+    meaning: Billing error — check account balance.
+  - code: 1030
+    meaning: Minimum prepayment not met.
+catalogue:
+  url: https://www.onlinenic.com/en/Domains/index/19.html
+  status: 200
+  tld_rows: 394
+  note: >-
+    The pricing page publishes a per-TLD wholesale price for each of the four tiers across gTLDs, new
+    gTLDs and ccTLDs, with separate registration and renewal figures. Prices are read from the rendered
+    table; a few TLDs also have a promotional first-year price shown alongside the standard price.
+  machine_readable: false
+  machine_readable_note: >-
+    There is no pricing API or downloadable price feed on the public site. The API's own getSSLprice
+    and getSSLProductDetails commands return certificate prices to an authenticated reseller, and the
+    WHMCS Pricing Importer consumes "the official CSV file" — but that CSV is behind the reseller
+    control panel, so no machine-readable price list is publicly reachable.
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
