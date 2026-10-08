@@ -53,6 +53,8 @@ url: >-
   https://raw.githubusercontent.com/api-evangelist/onlinenic/refs/heads/main/apis.yml
 specificationVersion: '0.23'
 common:
+  - type: FinOps
+    url: finops/onlinenic-finops.yml
   - type: Website
     url: https://www.onlinenic.com/
   - type: DeveloperPortal
