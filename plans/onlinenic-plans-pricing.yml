@@ -115,3 +115,34 @@ catalogue:
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models:
+  - prepaid
+  units: []
+  plans:
+  - name: Platinum
+    access: other
+    model: prepaid
+    model_how: stated
+    units: []
+    periods: []
+  - name: Gold
+    access: other
+    model: prepaid
+    model_how: stated
+    units: []
+    periods: []
+  - name: Silver
+    access: other
+    model: prepaid
+    model_how: stated
+    units: []
+    periods: []
+  - name: Bronze
+    access: other
+    model: prepaid
+    model_how: stated
+    units: []
+    periods: []
