@@ -1,4 +1,4 @@
-# OnlineNIC (onlinenic)
+# OnlineNIC
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,71 +64,114 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-OnlineNIC, Inc. is an ICANN-accredited domain registrar (IANA ID 82) and wholesale reseller platform,
-operating since 1999, selling domain names across roughly 400 TLDs, SSL/TLS certificates from DigiCert,
-GeoTrust, RapidSSL, Sectigo and Symantec, business email, reseller and cloud hosting, escrow and
-domain-privacy services. It publishes a partner-facing Reseller API — currently build 4.0.9 — for
-domains, contacts, nameservers, EPP auth codes, registrar transfers, ID Shield privacy, Whois
-verification and the full SSL certificate lifecycle.
+OnlineNIC, Inc. is an ICANN-accredited domain registrar (IANA ID 82) and wholesale reseller platform, operating since 1999, that sells domain names across roughly 400 TLDs, SSL/TLS certificates from DigiCert, GeoTrust, RapidSSL, Sectigo and Symantec, business email, reseller and cloud hosting, escrow and domain-privacy services. It publishes a partner-facing Reseller API — currently build 4.0.9 — that lets resellers register, renew, transfer and manage domains, manage contacts, nameservers and EPP auth codes, apply ID Shield registrant privacy, run Whois verification, and order, reissue, cancel and revoke SSL certificates. The API is an RPC surface over HTTPS with a JSON envelope; the contract is published only as a PDF reference guide, with no OpenAPI or other machine-readable description.
 
-**URL:** [Visit APIs.json URL](https://raw.githubusercontent.com/api-evangelist/onlinenic/refs/heads/main/apis.yml)
+**Areas:** Domains · Domain Registration · Registrar · DNS · SSL Certificates · Certificates · Reseller · Hosting · Security
 
-## Scope
+## OnlineNIC on APIs.io
 
-- **Type:** Index
-- **Position:** Producing
-- **Access:** 3rd-Party
+Everything profiled for OnlineNIC is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/onlinenic/](https://apis.io/providers/onlinenic/)** — or go straight to one of the APIs or properties below.
 
-## Timestamps
+### APIs (1)
 
-- **Created:** 2025-02-09
-- **Modified:** 2026-09-17
+- [OnlineNIC Reseller API](https://apis.io/apis/onlinenic/onlinenic/) — The OnlineNIC Reseller API (build 4.0.9) gives partners programmatic control of the OnlineNIC product catalogue. Twenty-six domain commands cover…
 
-## APIs
+### Published properties
 
-### OnlineNIC Reseller API
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-Twenty-six domain commands and seventeen SSL commands over an RPC-style HTTPS surface: two PHP
-endpoints, a `command` query parameter, POST only, and a JSON envelope carrying an integer status code
-on every response (including errors — the HTTP status is always 200). Authentication is an API key plus
-a per-request MD5 token over the reseller id, password digest, timestamp and command name, with an
-optional source-IP allowlist.
+#### MCP servers (1)
 
-**Human URL:** [https://www.onlinenic.com/cp_english/template_api/api_help.php](https://www.onlinenic.com/cp_english/template_api/api_help.php)
+Model Context Protocol servers that expose the API to agents.
 
-**Base URL:** `https://api.onlinenic.com/api4/`
+- [onlinenic-mcp.yml](https://apis.io/servers/onlinenic/onlinenic-mcp-yml/)
 
-#### Properties
+#### Security (2)
 
-- [Documentation](https://www.onlinenic.com/cp_english/template_api/api_help.php)
-- [API 4.0.9 Reseller Guide (PDF)](https://www.onlinenic.com/cp_english/template_api/download/Onlinenic_API_v4.0.9.2_Reseller_Guide.pdf)
-- [API 3.4 Usage Guide (PDF, deprecated)](https://onlinenic.com/cp_english/template_api/download/API_EN_Version_3.4.pdf)
-- [OnlineNIC PHP SDK](https://www.onlinenic.com/cp_english/template_api/download.php?f=sdk_php.zip)
-- [OnlineNIC Pro for WHMCS](https://www.onlinenic.com/en/Module/index/17.html)
+Authentication, trust centre, and vulnerability disclosure.
 
-## Notes from the 2026-09-17 enrichment pass
+- [Onlinenic Authentication](https://apis.io/security/onlinenic/onlinenic-authentication/)
+- [Onlinenic Domain Security](https://apis.io/security/onlinenic/onlinenic-domain-security/)
 
-- **No machine-readable contract.** The API reference ships only as a PDF. `/openapi.json`,
-  `/swagger.json`, `/api-docs` and `?wsdl` were probed on both `www.onlinenic.com` and
-  `api.onlinenic.com` and all return 404 or the ordinary JSON error envelope. No AsyncAPI, GraphQL SDL,
-  Postman collection or JSON Schema exists either.
-- **The API is live.** `GET https://api.onlinenic.com/api4/ssl/index.php` returns
-  `{"code":1001,"msg":"Invalid request."}` and an unauthenticated POST returns
-  `{"code":1004,"msg":"Required parameter missing(user)."}`.
-- **The recorded docs host was dead.** `wiki.onlinenic.com` returns "No forward mapping for this host."
-  and serves a mismatched certificate; the record has been repointed at the live reference page.
-- **The documented OTE sandbox host did not answer.** `ote.onlinenic.com` resolves but did not complete
-  a connection over HTTP or HTTPS on 2026-09-17.
-- **Every first-party package predates the current API.** The PHP SDK (2015) and the WHMCS module
-  (2019) both drive the deprecated 3.4 socket protocol on port 30009; nothing first-party targets
-  API v4.
-- **No published rate limits and no idempotency key.** Two scaffold artifacts that had invented both
-  (`plans/` and `rate-limits/`) were replaced with what the provider actually publishes.
-- **Nothing in `/.well-known/`** on any host, no MCP server, no A2A agent card, no status page and no
-  GitHub organisation.
+#### Plans and pricing (1)
 
-## Maintainers
+Published plans, tiers and prices.
 
-**FN:** Kin Lane
+- [Onlinenic Plans Pricing](https://apis.io/plans/onlinenic/onlinenic-plans-pricing/)
 
-**Email:** kin@apievangelist.com
+#### Rate limits (1)
+
+Published request limits.
+
+- [Onlinenic Rate Limits](https://apis.io/rate-limits/onlinenic/onlinenic-rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Onlinenic Finops](https://apis.io/finops/onlinenic/onlinenic-finops/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.onlinenic.com/)
+- [Pricing](https://www.onlinenic.com/en/Domains/index/19.html)
+- [Sign up](https://www.onlinenic.com/en/Home/register.html)
+- [Support](https://helpdesk.onlinenic.com/portal/en/home)
+- [Blog](https://www.onlinenic.com/en/News/index.html)
+- [Terms of service](https://www.onlinenic.com/en/Content/content/118.html)
+- [Privacy policy](https://onlinenic.com/OnlineNIC_PRIVACY_Statement.pdf)
+
+## API Evangelist rating
+
+**Kin Score 36.7** — thin · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 66.1 |
+| Contract quality | 0.0 |
+| Contract governance | 0.0 |
+| Operational transparency | 15.8 |
+| Developer ergonomics | 59.5 |
+| Access clarity | 76.3 |
+
+**Agent readiness 7.9** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | — |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | — |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 24.5** — Education & Research
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/onlinenic/](https://apis.io/providers/onlinenic/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for OnlineNIC: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/onlinenic/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
